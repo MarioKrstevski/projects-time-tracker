@@ -1,50 +1,42 @@
-import React, {useRef, useState} from 'react';
-import Project from './Project';
+import React, { useRef } from 'react';
 
-export default function ProjectDetails(props){
+export default function ProjectDetails(props) {
+  const textInputValue = useRef(null);
+  const projectName = capitalizeFirstLetter(props.projectName);
 
-    const textInputValue = useRef(null);
-    const {project} = props.location.state;
+  const addTimeToProject = () => {
+    textInputValue.current.focus();
+    if (textInputValue.current.value !== '') {
+      props.addTime(projectName, { dateRegistered: new Date(), duration: parseInt(textInputValue.current.value) });
+      textInputValue.current.value = '';
+    }
+  };
 
-    const addTimeToProject = () => {
-        textInputValue.current.focus();
-        // props.addTime(props.name,{dateRegistered: new Date() , duration: parseInt(textInput.current.value)});
-        if( textInputValue.current.value != ''){
-            setTimeEntries([...timeEntries, {dateRegistered: new Date(), duration:parseInt(textInputValue.current.value)}]);
-            console.log({timeEntries});
-            textInputValue.current.value = '';
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
 
+  const theProject = props.projects.find(proj => {
+    return projectName === proj.projectName;
+  });
 
-            // props.location.state.addTime(project.projectName, {dateRegistered: new Date(), duration:parseInt(textInputValue.current.value)} );
-        }
-    };
+  const timeEntriesList = theProject.time.map((timeEntry, index) => {
+    let { dateRegistered, duration } = timeEntry;
 
-  
+    return <div key={index} children={` Date: ${dateRegistered}, Time: ${duration} `} />;
+  });
 
-    const [timeEntries,setTimeEntries] = useState(project.time)
-    
-    const allTimeEntries = timeEntries.map( (timeEntry,index) => {
+  return (
+    <div>
+      <h1>{theProject.name}</h1>
+      <p>{theProject.description}</p>
+      <p> Total Hours: {theProject.time.reduce((acc, current) => acc + current.duration, 0) / 3600}</p>
+      {timeEntriesList}
 
-        let {dateRegistered,duration}= timeEntry;
-        
-        return (
-            <div key={index} children={` Date: ${dateRegistered}, Time: ${duration} `}/>
-        )
-    })
-    console.log(props.location)
-
-
-    return <div > 
-    <h1>{project.name}</h1>
-    <p>{project.description}</p>  
-    {console.log(project)}
-    <p> Total Hours: { project.time.reduce((acc, current)=> acc + current.duration, 0)/3600}</p>
-    {console.log({allTimeEntries})}
-    {allTimeEntries}
-    
-    <div> 
-        <input type='number' ref={textInputValue}></input>
+      <div>
+        <input type="number" ref={textInputValue} />
         <button onClick={addTimeToProject}>Add time</button>
+      </div>
     </div>
-    </div>
+  );
 }
