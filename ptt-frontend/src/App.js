@@ -37,6 +37,7 @@ function App() {
     setProjects(updatedProjects);
   };
   // change in the apollo client
+  console.log('test change')
   // under the `nav`
   return (
     <div>
