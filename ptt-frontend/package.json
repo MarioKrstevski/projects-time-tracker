@@ -4,9 +4,11 @@
   "private": true,
   "dependencies": {
     "@reach/router": "^1.2.1",
+    "apollo-boost": "^0.4.3",
     "final-form": "^4.16.1",
     "final-form-focus": "^1.1.2",
     "react": "^16.8.6",
+    "react-apollo": "^2.5.8",
     "react-dom": "^16.8.6",
     "react-final-form": "^6.3.0",
     "react-scripts": "3.0.1",
