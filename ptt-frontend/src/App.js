@@ -36,7 +36,7 @@ function App() {
     });
     setProjects(updatedProjects);
   };
-
+  // change in the apollo client
   // under the `nav`
   return (
     <div>
