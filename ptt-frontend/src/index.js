@@ -33,8 +33,11 @@ const ExchangeRates = () => (
     </Query>
   );
 
+  // const URL = 'https://48p1r2roz4.sse.codesandbox.io';
+  const URL = 'http://localhost:4000';
+
 const client = new ApolloClient({
-  uri: 'https://48p1r2roz4.sse.codesandbox.io',
+  uri: URL,
 });
 
 client

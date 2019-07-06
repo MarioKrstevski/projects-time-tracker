@@ -28,6 +28,15 @@ const GET_PROJECTS = gql`
   }
 `;
 
+const GET_MY_PROJECTS = gql`
+{
+  getProjects {
+    projectName
+    description
+  }
+}
+`;
+
 export default function ProjectFeed(props) {
   const projectList = props.projects.map(project => {
     return (
@@ -44,12 +53,16 @@ export default function ProjectFeed(props) {
     );
   });
   return (
-    <Query query={GET_PROJECTS}>
+    <Query query={GET_MY_PROJECTS}>
       {({ loading, error, data }) => {
+
+       console.log({queryData: data});
+
         if (loading) return 'Loading...';
         if (error) return `Error! ${error.message}`;
 
         return (
+
           <ProjectListContainer>
             <ProjectForm addNewProject={props.addNewProject} />
             {projectList}
