@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import ProjectList from './components/ProjectList';
+import  ProjectListTwo  from './components/ProectListTwo';
+
 import ProjectDetails from './components/ProjectDetails';
 import { Link, Router } from '@reach/router';
 
@@ -45,7 +47,9 @@ function App() {
         <Link to="/">Project List</Link>
       </nav>
       <Router>
-        <ProjectList addTime={addTime} addNewProject={addNewProject} projects={projects} path="/" />
+        {/* <ProjectList addTime={addTime} addNewProject={addNewProject} projects={projects} path="/" /> */}
+        <ProjectListTwo addTime={addTime} addNewProject={addNewProject} projects={projects} path="/" />
+
         <ProjectDetails addTime={addTime} projects={projects} path="project/:projectName" />
       </Router>
     </div>
