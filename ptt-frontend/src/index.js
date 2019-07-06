@@ -6,35 +6,11 @@ import * as serviceWorker from './serviceWorker';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 
-import { Query } from "react-apollo";
+import { Query } from 'react-apollo';
 import { gql } from 'apollo-boost';
 
-const ExchangeRates = () => (
-    <Query
-      query={gql`
-        {
-          rates(currency: "USD") {
-            currency
-            rate
-          }
-        }
-      `}
-    >
-      {({ loading, error, data }) => {
-        if (loading) return <p>Loading...</p>;
-        if (error) return <p>Error :(</p>;
-  
-        return data.rates.map(({ currency, rate }) => (
-          <div key={currency}>
-            <p>{currency}: {rate}</p>
-          </div>
-        ));
-      }}
-    </Query>
-  );
-
-  // const URL = 'https://48p1r2roz4.sse.codesandbox.io';
-  const URL = 'http://localhost:4000';
+// const URL = 'https://48p1r2roz4.sse.codesandbox.io';
+const URL = 'http://localhost:4000';
 
 const client = new ApolloClient({
   uri: URL,
@@ -52,20 +28,15 @@ client
   })
   .then(result => console.log(result));
 
-const TestApp = () => {
+const ApolloWrappedApp = () => {
   return (
     <ApolloProvider client={client}>
-       {/* <div>
-       <h2>My first Apollo app 🚀</h2>
-       <ExchangeRates></ExchangeRates>
-      </div> */}
-    <App></App>
-
+      <App />
     </ApolloProvider>
   );
 };
 
-ReactDOM.render(<TestApp  />, document.getElementById('root'));
+ReactDOM.render(<ApolloWrappedApp />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
