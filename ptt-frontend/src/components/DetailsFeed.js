@@ -3,13 +3,25 @@ import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 
 const GET_DETAILS = gql`
-  {
-    rates(currency: "USD") {
-      currency
-      rate
+  query Project($projectName: String!) {
+    dog(projectName: $projectName) {
+      description
+      projectName
+      time
     }
   }
 `;
+
+const GET_PROJECT_DETAILS = gql`
+  {
+    getProject(pN: $projectName) {
+      projectName
+      description
+    }
+  }
+`;
+
+
 
 export default function DetailsFeed(props) {
   const textInputValue = useRef(null);
@@ -40,9 +52,14 @@ export default function DetailsFeed(props) {
 
     return <div key={index} children={` Date: ${dateRegistered}, Time: ${duration} `} />;
   });
+
+
   return (
-    <Query query={GET_DETAILS}>
+    <Query query={GET_PROJECT_DETAILS} variables={{ projectName: props.projectName}}>
       {({ loading, error, data }) => {
+
+        console.log({detailsData:data})
+        console.log({projectName:props.projectName})
         if (loading) return 'Loading...';
         if (error) return `Error! ${error.message}`;
 

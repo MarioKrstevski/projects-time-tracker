@@ -19,24 +19,24 @@ const projects = [
     projectName: "Google",
     description: "a search engine",
     time: [
-      { dateRegistered: new Date(), duration: 2000 },
-      { dateRegistered: new Date(), duration: 8000 }
+      { dateRegistered: new Date().toLocaleDateString(), duration: 2000 },
+      { dateRegistered: new Date().toLocaleDateString(), duration: 8000 }
     ]
   },
   {
     projectName: "Youtube",
     description: "video sharing platform",
     time: [
-      { dateRegistered: new Date(), duration: 1000 },
-      { dateRegistered: new Date(), duration: 3000 }
+      { dateRegistered: new Date().toLocaleDateString(), duration: 1000 },
+      { dateRegistered: new Date().toLocaleDateString(), duration: 3000 }
     ]
   },
   {
     projectName: "Flutter",
     description: "Better Android",
     time: [
-      { dateRegistered: new Date(), duration: 3300 },
-      { dateRegistered: new Date(), duration: 4000 }
+      { dateRegistered: new Date().toLocaleDateString(), duration: 3300 },
+      { dateRegistered: new Date().toLocaleDateString(), duration: 4000 }
     ]
   }
 ];
@@ -47,30 +47,30 @@ const typeDefs = gql`
   # Comments in GraphQL are defined with the hash (#) symbol.
 
   # This "Book" type can be used in other type declarations.
-  
+
   # new Date().toDateString()
   # "Sat Jul 06 2019"
 
   type Project {
     projectName: String
     description: String
-    time: Time
+    time: [Time]
   }
 
   type Time {
-    dateRegistered: String!
-    duration: Int!
+    dateRegistered: String
+    duration: Int
   }
 
   # The "Query" type is the root of all GraphQL queries.
   # (A "Mutation" type will be covered later on.)
   type Query {
-    projects: [Project]
-    getProject: Project
+    getProjects: [Project]
+    getProject(projectName: String!): Project
   }
 
   type Mutation {
-    addProject(projectName: String, description: String): Project
+    addProject(projectName: String!, description: String!, time: Int): Project
   }
 `;
 
@@ -78,7 +78,35 @@ const typeDefs = gql`
 // schema.  We'll retrieve books from the "books" array above.
 const resolvers = {
   Query: {
-    projects: () => projects
+    getProjects: () => projects,
+    getProject: (parent, args, context, info) => {
+      let found = projects.find(project => {
+        return project.projectName.toLowerCase() === args.projectName;
+      });
+
+      if (found != undefined && found != null) {
+        return found;
+      } else {
+        return {
+          projectName: "Default",
+          description: "Default Default",
+          time: [
+            { dateRegistered: new Date().toLocaleDateString(), duration: 3300 },
+            { dateRegistered: new Date().toLocaleDateString(), duration: 4000 }
+          ]
+        };
+      }
+    }
+    // getProject: (parent, args, context, info) => {
+
+    // return  {
+    //   projectName: args.projectName,
+    //   description: "Better Android",
+    //   time: [
+    //     { dateRegistered: new Date().toLocaleDateString(), duration: 3300 },
+    //     { dateRegistered: new Date().toLocaleDateString(), duration: 4000 }
+    //   ]
+    // }
   }
 };
 

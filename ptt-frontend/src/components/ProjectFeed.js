@@ -30,7 +30,7 @@ const GET_PROJECTS = gql`
 
 const GET_MY_PROJECTS = gql`
   {
-    projects {
+    getProjects {
       projectName
       description
     }
