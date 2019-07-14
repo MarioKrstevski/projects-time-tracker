@@ -3,30 +3,23 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-import ApolloClient from 'apollo-boost';
+import { ApolloClient } from 'apollo-boost';
+import { createHttpLink } from 'apollo-link-http'
+import { InMemoryCache } from 'apollo-cache-inmemory'
 import { ApolloProvider } from 'react-apollo';
 
 import { Query } from 'react-apollo';
 import { gql } from 'apollo-boost';
 
-// const URL = 'https://48p1r2roz4.sse.codesandbox.io';
 const URL = 'http://localhost:4000';
 
-const client = new ApolloClient({
-  uri: URL,
-});
 
-client
-  .query({
-    query: gql`
-      {
-        rates(currency: "USD") {
-          currency
-        }
-      }
-    `,
-  })
-  .then(result => console.log(result));
+const httpLink = createHttpLink({ uri: 'http://localhost:4000/graphql' })
+  const client = new ApolloClient({
+    uri: URL,
+    link: httpLink,
+    cache: new InMemoryCache(),
+  });
 
 const ApolloWrappedApp = () => {
   return (
