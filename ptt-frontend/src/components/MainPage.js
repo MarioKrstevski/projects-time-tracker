@@ -6,27 +6,6 @@ import Project from './Project';
 import { ProjectListContainer } from './styled-components';
 import ProjectForm from './ProjectForm';
 
-// const GET_PROJECTS = gql`
-//   {
-//     project {
-//       name
-//       description
-//       time {
-//         date
-//         duration
-//       }
-//     }
-//   }
-// `;
-
-const GET_PROJECTS = gql`
-  {
-    rates(currency: "USD") {
-      currency
-      rate
-    }
-  }
-`;
 
 const GET_MY_PROJECTS = gql`
   {
@@ -37,7 +16,7 @@ const GET_MY_PROJECTS = gql`
   }
 `;
 
-export default function ProjectFeed(props) {
+export default function MainPage(props) {
   return (
     <Query query={GET_MY_PROJECTS}>
       {({ loading, error, data }) => {

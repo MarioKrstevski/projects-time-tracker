@@ -2,16 +2,6 @@ import React, { useRef } from 'react';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 
-const GET_DETAILS = gql`
-  query Project($projectName: String!) {
-    dog(projectName: $projectName) {
-      description
-      projectName
-      time
-    }
-  }
-`;
-
 const GET_PROJECT_DETAILS = gql`
   {
     getProject(pN: $projectName) {
@@ -21,9 +11,7 @@ const GET_PROJECT_DETAILS = gql`
   }
 `;
 
-
-
-export default function DetailsFeed(props) {
+export default function ProjectPage(props) {
   const textInputValue = useRef(null);
 
   const projectName = capitalizeFirstLetter(props.projectName);

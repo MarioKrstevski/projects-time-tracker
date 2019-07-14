@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import ProjectList from './components/ProjectList';
-import  ProjectFeed  from './components/ProjectFeed';
-import  DetailsFeed  from './components/DetailsFeed';
 
-import ProjectDetails from './components/ProjectDetails';
+import PopularRepositories from './components/PopularRepositories';
+import  MainPage  from './components/MainPage';
+import  ProjectPage  from './components/ProjectPage';
+
+import ProjectList from './components/ProjectList';
 import { Link, Router } from '@reach/router';
 
 function App() {
@@ -39,6 +40,8 @@ function App() {
     });
     setProjects(updatedProjects);
   };
+
+  
   // change in the apollo client
   console.log('test change')
   // under the `nav`
@@ -48,10 +51,10 @@ function App() {
         <Link to="/">Project List</Link>
       </nav>
       <Router>
-        {/* <ProjectList addTime={addTime} addNewProject={addNewProject} projects={projects} path="/" /> */}
-        <ProjectFeed addTime={addTime} addNewProject={addNewProject} projects={projects} path="/" />
-
-        <DetailsFeed addTime={addTime} projects={projects} path="project/:projectName" />
+        <ProjectList addTime={addTime} addNewProject={addNewProject} projects={projects} path="/" />
+        <MainPage addTime={addTime} addNewProject={addNewProject} projects={projects} path="/" />
+        <ProjectPage addTime={addTime} projects={projects} path="project/:projectName" />
+        <PopularRepositories path="repositories"/>
       </Router>
     </div>
   );
