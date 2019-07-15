@@ -1,15 +1,17 @@
-
-import React, {useState} from 'react';
+import React from 'react';
 import MutationWrappedUpdateForm from './MutationWrappedUpdateForm';
 
-export default function Modal({refetch}) {
-    
-    const [isOpen, setIsOpen] = useState(false);
-    
+export default function Modal({ refetch, selectedProject, isOpen, modalInteraction}) {
 
-    if(isOpen){
-        return <MutationWrappedUpdateForm />
-    }
-
-    return <div></div>
+    console.log('Selected: ', selectedProject )
+  if (isOpen) {
+    return (
+      <div>
+        <MutationWrappedUpdateForm refetch={refetch} selectedProject={selectedProject}/>
+        <button onClick={()=>modalInteraction.closeModal()}>Close Modal</button>
+      </div>
+    );
   }
+
+  return <div />;
+}

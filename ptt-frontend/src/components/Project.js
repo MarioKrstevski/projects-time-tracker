@@ -18,7 +18,7 @@ export default function MutationWrappedProject(props) {
   );
 }
 
-function Project({ name, description, time, deleteProject, refetch }) {
+function Project({ name, description, time, deleteProject, refetch, modalInteraction, setSelectedProject }) {
   const handleDeleteProject = () => {
     deleteProject({ variables: { projectName: name } })
       .then(({ data }) => {
@@ -30,7 +30,10 @@ function Project({ name, description, time, deleteProject, refetch }) {
       });
   };
 
-  const handleUpdateProject = () => {};
+  const handleUpdateProject = () => {
+    setSelectedProject({projectName: name,description})
+    modalInteraction.openModal();
+  };
 
   return (
     <div>

@@ -16,6 +16,6 @@ export default function MutationWrappedProjectForm({refetch}) {
     `;
   
     return (
-      <Mutation mutation={ADD_PROJECT}>{(addProject, { data }) => <ProjectForm refetch={refetch} callMutation={addProject} />}</Mutation>
+      <Mutation mutation={ADD_PROJECT}>{(addProject, { data }) => <ProjectForm version={1} refetch={refetch} callMutation={addProject} />}</Mutation>
     );
   }

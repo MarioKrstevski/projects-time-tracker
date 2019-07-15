@@ -7,19 +7,19 @@ const FieldRow = styled.div`
   background-color: ${props => (props.active ? 'lightcyan' : 'white')};
 `;
 
-
 export default function ProjectForm(props) {
   const required = value => (value ? undefined : 'Required');
 
   const handleSubmit = (project, e, f, d) => {
     // e.preventDefault();
-   
+
+    console.log('Test123', props.selectedProject);
     console.log('Projhect', { ...project, time: [] });
     console.log('Variables', { variables: { ...project } });
     return props
       .callMutation({ variables: { ...project } })
       .then(({ data }) => {
-        console.log(" I am da tata", data)
+        console.log(' I am da tata', data);
         props.refetch();
       })
       .catch(err => {
@@ -56,13 +56,21 @@ export default function ProjectForm(props) {
                 touched: true,
               }}
             >
-              {({ input, meta, placeholder }) => (
-                <FieldRow active={meta.active}>
-                  <label htmlFor="projectName">Project</label>
-                  <input {...input} placeholder={placeholder} />
-                  {meta.error && meta.touched && <span>{meta.error}</span>}
-                </FieldRow>
-              )}
+              {({ input, meta, placeholder }) => {
+                const { value, ...inputProps } = input;
+                const projectName = 'projectName' + props.version;
+                return (
+                  <FieldRow active={meta.active}>
+                    <label htmlFor={projectName}>Project</label>
+                    {props.selectedProject ? (
+                      <input {...inputProps} name={projectName} type="text" defaultValue={props.selectedProject.projectName} />
+                    ) : (
+                      <input {...input} name={projectName} type="text" placeholder={placeholder} />
+                    )}
+                    {meta.error && meta.touched && <span>{meta.error}</span>}
+                  </FieldRow>
+                );
+              }}
             </Field>
           </div>
           <div>
@@ -77,18 +85,26 @@ export default function ProjectForm(props) {
                 touched: true,
               }}
             >
-              {({ input, meta, placeholder }) => (
-                <FieldRow active={meta.active}>
-                  <label htmlFor="description">Description</label>
-                  <input {...input} placeholder={placeholder} />
-                  {meta.error && meta.touched && <span>{meta.error}</span>}
-                </FieldRow>
-              )}
+              {({ input, meta, placeholder }) => {
+                const { value, ...inputProps } = input;
+                const description = 'description' + props.version;
+                return (
+                  <FieldRow active={meta.active}>
+                    <label htmlFor={description}>Description</label>
+                    {props.selectedProject ? (
+                      <input {...inputProps} name={description} type="text" defaultValue={props.selectedProject.description} />
+                    ) : (
+                      <input {...input} name={description} type="text" placeholder={placeholder} />
+                    )}
+                    {meta.error && meta.touched && <span>{meta.error}</span>}
+                  </FieldRow>
+                );
+              }}
             </Field>
           </div>
 
           <button type="submit" disabled={submitting}>
-            Create
+            Create/Update
           </button>
 
           {/* Rendering the values just to make sure everything works as intended */}

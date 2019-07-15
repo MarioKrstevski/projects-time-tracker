@@ -27,12 +27,12 @@ const projects = [
     ]
   }
 ];
-import redis from 'redis';
+import redis from "redis";
 const client = redis.createClient();
-const {promisify} = require('util');
+const { promisify } = require("util");
 const getAsync = promisify(client.get).bind(client);
 
-client.on("error", (err) =>  {
+client.on("error", err => {
   console.log("Error " + err);
 });
 
@@ -73,10 +73,9 @@ export default {
     },
     getRedis: (parent, { key }) => {
       try {
-
         return client.get(key);
-      } catch (e){
-        return null
+      } catch (e) {
+        return null;
       }
     }
     // getProject: (parent, args, context, info) => {
@@ -91,64 +90,80 @@ export default {
     // }
   },
   Mutation: {
-    addProject: async (parent, {projectName, description}) => {
-      console.log('We are hitting the server')
-      try{
+    addProject: async (parent, { projectName, description }) => {
+      console.log("We are hitting the server");
+      try {
         await client.set("Test", "Test", redis.print);
         return {
-        projectName: `${projectName} Success`,
-        description: `${description}`,
-        time: [ 
-          {
-            description: "Default - Search not found implemented",
-            duration: 3300
-          },
-          { description: "Default - Can't find Project", duration: 4000 }
-        ]
-        }
-      } catch (e) {
-        console.log(e);
-        return {
-          projectName: `${projectName} Failure`,
+          projectName: `${projectName} Success`,
           description: `${description}`,
-          time: [ 
+          time: [
             {
               description: "Default - Search not found implemented",
               duration: 3300
             },
             { description: "Default - Can't find Project", duration: 4000 }
           ]
-          }
+        };
+      } catch (e) {
+        console.log(e);
+        return {
+          projectName: `${projectName} Failure`,
+          description: `${description}`,
+          time: [
+            {
+              description: "Default - Search not found implemented",
+              duration: 3300
+            },
+            { description: "Default - Can't find Project", duration: 4000 }
+          ]
+        };
       }
       // console.log(projectName,description)
       // return {
       //   projectName: `${projectName} Test`,
       //   description: `${description}`,
-      //   time: [ 
+      //   time: [
       //     {
       //       description: "Default - Search not found implemented",
       //       duration: 3300
       //     },
       //     { description: "Default - Can't find Project", duration: 4000 }
       //   ]
-      },
+    },
 
-      deleteProject: async (parent, {projectName}) => {
-          try {
-            return 'Project has been deleted successfully';
-          } catch (err){
-            console.log('Delete project: erorr = ', error)
-          }
-      },
-      setRedis: async (parent, { key, value}) => {
-        try {
-            await client.set(key,value);
-            return true;
-        } catch (e){
-          console.log(e);
-          return false;
-        }
+    deleteProject: async (parent, { projectName }) => {
+      try {
+        return "Project has been deleted successfully";
+      } catch (err) {
+        console.log("Delete project: erorr = ", error);
+      }
+    },
+    updateProject: async (parent, { projectName, description }) => {
+      try {
+        return {
+          projectName: `${projectName} Update`,
+          description: `${description}`,
+          time: [
+            {
+              description: "Default - Search not found implemented",
+              duration: 3300
+            },
+            { description: "Default - Can't find Project", duration: 4000 }
+          ]
+        };
+      } catch (err) {
+        console.log("Update project: error = ", error);
+      }
+    },
+    setRedis: async (parent, { key, value }) => {
+      try {
+        await client.set(key, value);
+        return true;
+      } catch (e) {
+        console.log(e);
+        return false;
       }
     }
-  };
-
+  }
+};
