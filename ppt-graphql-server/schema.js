@@ -24,11 +24,13 @@ export default gql`
   type Query {
     getProjects: [Project]
     getProject(projectName: String!): Project
+    getRedis(key: String!): String
 
   }
 
   type Mutation {
-    addProject(projectName: String!, description: String!, time: Int): Project
+    setRedis(key: String!, value: String!): Boolean!
+    addProject(projectName: String!, description: String!): Project
     updateProject(projectName: String!, description: String!, time: Int): Project
     deleteProject(projectName: String!): Project
     addTime(projectName: String!, description: String!, duration: Int!): Time
