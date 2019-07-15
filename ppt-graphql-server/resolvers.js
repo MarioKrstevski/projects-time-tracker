@@ -73,6 +73,7 @@ export default {
     },
     getRedis: (parent, { key }) => {
       try {
+        
         return client.get(key);
       } catch (e){
         return null
