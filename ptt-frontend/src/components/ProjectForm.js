@@ -3,38 +3,21 @@ import styled from 'styled-components';
 import { Form, Field, FormSpy } from 'react-final-form';
 import createDecorator from 'final-form-focus';
 
-import gql from 'graphql-tag';
-import { Mutation } from 'react-apollo';
-
 const FieldRow = styled.div`
   background-color: ${props => (props.active ? 'lightcyan' : 'white')};
 `;
 
-export default function MutationWrappedProjectForm({refetch}) {
-  const ADD_PROJECT = gql`
-    mutation addProject($projectName: String!, $description: String!) {
-      addProject(projectName: $projectName, description: $description) {
-        description
-        projectName
-      }
-    }
-  `;
 
-  return (
-    <Mutation mutation={ADD_PROJECT}>{(addProject, { data }) => <ProjectForm refetch={refetch} addProject={addProject} />}</Mutation>
-  );
-}
-
-function ProjectForm(props) {
+export default function ProjectForm(props) {
   const required = value => (value ? undefined : 'Required');
 
-  const createProject = (project, e, f, d) => {
+  const handleSubmit = (project, e, f, d) => {
     // e.preventDefault();
    
     console.log('Projhect', { ...project, time: [] });
     console.log('Variables', { variables: { ...project } });
     return props
-      .addProject({ variables: { ...project } })
+      .callMutation({ variables: { ...project } })
       .then(({ data }) => {
         console.log(" I am da tata", data)
         props.refetch();
@@ -47,7 +30,7 @@ function ProjectForm(props) {
 
   return (
     <Form
-      onSubmit={createProject}
+      onSubmit={handleSubmit}
       decorators={[focusOnError]}
       subscription={{
         submitting: true,
