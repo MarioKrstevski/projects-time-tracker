@@ -73,7 +73,7 @@ export default {
     },
     getRedis: (parent, { key }) => {
       try {
-        
+
         return client.get(key);
       } catch (e){
         return null
@@ -92,8 +92,8 @@ export default {
   },
   Mutation: {
     addProject: async (parent, {projectName, description}) => {
+      console.log('We are hitting the server')
       try{
-
         await client.set("Test", "Test", redis.print);
         return {
         projectName: `${projectName} Success`,
@@ -133,6 +133,13 @@ export default {
       //   ]
       },
 
+      deleteProject: async (parent, {projectName}) => {
+          try {
+            return 'Project has been deleted successfully';
+          } catch (err){
+            console.log('Delete project: erorr = ', error)
+          }
+      },
       setRedis: async (parent, { key, value}) => {
         try {
             await client.set(key,value);

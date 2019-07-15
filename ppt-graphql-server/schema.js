@@ -32,7 +32,7 @@ export default gql`
     setRedis(key: String!, value: String!): Boolean!
     addProject(projectName: String!, description: String!): Project
     updateProject(projectName: String!, description: String!, time: Int): Project
-    deleteProject(projectName: String!): Project
+    deleteProject(projectName: String!): String
     addTime(projectName: String!, description: String!, duration: Int!): Time
     deleteTime(projectName: String!, description: String!): Time
   }
