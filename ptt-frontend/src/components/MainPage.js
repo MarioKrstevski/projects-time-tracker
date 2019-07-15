@@ -18,10 +18,11 @@ const GET_MY_PROJECTS = gql`
   }
 `;
 
-function ProjectList({ projects }) {
+function ProjectList({ projects, refetch }) {
   const projectList = projects.map(project => {
     return (
       <Project
+        refetch={refetch}
         key={project.projectName}
         time={project.time}
         name={project.projectName}
@@ -36,14 +37,15 @@ function ProjectList({ projects }) {
 export default function MainPage(props) {
   return (
     <Query query={GET_MY_PROJECTS}>
-      {({ loading, error, data }) => {
+      {({ loading, error, data, refetch }) => {
+
         if (loading) return 'Loading...';
         if (error) return `Error! ${error.message}`;
 
         return (
           <ProjectListContainer>
-            <ProjectForm addNewProject={props.addNewProject} />
-            <ProjectList projects={data.getProjects} />
+            <ProjectForm refetch={refetch} addNewProject={props.addNewProject} />
+            <ProjectList refetch={refetch} projects={data.getProjects} />
           </ProjectListContainer>
         );
       }}

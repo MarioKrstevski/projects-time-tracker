@@ -1,20 +1,49 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { Link } from '@reach/router';
 
-export default function Project(props) {
-  const textInput = useRef(null);
+import gql from 'graphql-tag';
+import { Mutation } from 'react-apollo';
+
+export default function MutationWrappedProject(props) {
+  const DELETE_PROJECT = gql`
+    mutation addProject($projectName: String!) {
+      deleteProject(projectName: $projectName)
+    }
+  `;
+
+  return (
+    <Mutation mutation={DELETE_PROJECT}>
+      {(deleteProject, { data }) => <Project deleteProject={deleteProject} {...props} />}
+    </Mutation>
+  );
+}
+
+function Project({ name, description, time, deleteProject, refetch }) {
+  const handleDeleteProject = () => {
+    deleteProject({ variables: { projectName: name } })
+      .then(({ data }) => {
+        console.log(' I am data from delting project', data);
+        refetch();
+      })
+      .catch(err => {
+        console.log('Error when deleting Project', err);
+      });
+  };
+
+  const handleUpdateProject = () => {};
 
   return (
     <div>
-      <Link to={'project/' + props.name.toLowerCase()}>
-        <h2>{props.name}</h2>
-      </Link>
-      <p>{props.description}</p>
-      <p> Total Hours: {props.time && props.time.reduce((acc, current) => acc + current.duration, 0) / 3600}</p>
+      <h2>{name}</h2>
+      <p>{description}</p>
+      <p> Total Hours: {time && time.reduce((acc, current) => acc + current.duration, 0) / 3600}</p>
 
       <div>
-        <input type="number" ref={textInput} />
-        <button>Add time</button>
+        <Link to={'project/' + name.toLowerCase()}>
+          <button onClick={handleDeleteProject}>Open Project</button>
+        </Link>
+        <button onClick={handleDeleteProject}>Delete Project</button>
+        <button onClick={handleUpdateProject}>Update Project</button>
       </div>
     </div>
   );

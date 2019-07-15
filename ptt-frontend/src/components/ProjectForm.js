@@ -3,13 +3,46 @@ import styled from 'styled-components';
 import { Form, Field, FormSpy } from 'react-final-form';
 import createDecorator from 'final-form-focus';
 
+import gql from 'graphql-tag';
+import { Mutation } from 'react-apollo';
+
 const FieldRow = styled.div`
   background-color: ${props => (props.active ? 'lightcyan' : 'white')};
 `;
 
-export default function ProjectForm(props) {
+export default function MutationWrappedProjectForm({refetch}) {
+  const ADD_PROJECT = gql`
+    mutation addProject($projectName: String!, $description: String!) {
+      addProject(projectName: $projectName, description: $description) {
+        description
+        projectName
+      }
+    }
+  `;
+
+  return (
+    <Mutation mutation={ADD_PROJECT}>{(addProject, { data }) => <ProjectForm refetch={refetch} addProject={addProject} />}</Mutation>
+  );
+}
+
+function ProjectForm(props) {
   const required = value => (value ? undefined : 'Required');
-  const createProject = project => props.addNewProject({ ...project, time: [] });
+
+  const createProject = (project, e, f, d) => {
+    // e.preventDefault();
+   
+    console.log('Projhect', { ...project, time: [] });
+    console.log('Variables', { variables: { ...project } });
+    return props
+      .addProject({ variables: { ...project } })
+      .then(({ data }) => {
+        console.log(" I am da tata", data)
+        props.refetch();
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
   const focusOnError = createDecorator();
 
   return (
@@ -22,7 +55,12 @@ export default function ProjectForm(props) {
       }}
     >
       {({ handleSubmit, values, submitting }) => (
-        <form onSubmit={handleSubmit}>
+        <form
+          onSubmit={e => {
+            e.preventDefault();
+            handleSubmit();
+          }}
+        >
           <div>
             <Field
               name="projectName"
@@ -69,11 +107,13 @@ export default function ProjectForm(props) {
           <button type="submit" disabled={submitting}>
             Create
           </button>
-          <FormSpy subscription={{ values: true }}>
+
+          {/* Rendering the values just to make sure everything works as intended */}
+          {/* <FormSpy subscription={{ values: true }}>
             {({ values }) => <pre>{JSON.stringify(values, undefined, 2)}</pre>}
           </FormSpy>
 
-          <pre>{JSON.stringify(values, undefined, 2)}</pre>
+          <pre>{JSON.stringify(values, undefined, 2)}</pre> */}
         </form>
       )}
     </Form>
