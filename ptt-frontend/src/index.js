@@ -26,36 +26,29 @@ const authLink = setContext((_, { headers }) => {
 })
 
 const httpLink = createHttpLink({ uri: 'http://localhost:4000/graphql' });
-const link = authLink.concat(httpLink);
+// const httpLink = createHttpLink({ uri: 'https://api.github.com/graphql' })
+// const link = authLink.concat(httpLink);
 
 const client = new ApolloClient({
   // uri: URL,
-  link,
+  link: httpLink,
   cache: new InMemoryCache(),
 });
 
-const POPULAR_REPOSITORIES_LIST = gql`
+const GET_MY_PROJECTS = gql`
 {
-  search(query: "stars:>50000", type: REPOSITORY, first: 10) {
-    repositoryCount
-    edges {
-      node {
-        ... on Repository {
-          name
-          owner {
-            login
-          }
-          stargazers {
-            totalCount
-          }
-        }
-      }
+  getProjects {
+    projectName
+    description
+    time {
+      description
+      duration
     }
   }
 }
-`
+`;
 
-client.query({ query: POPULAR_REPOSITORIES_LIST }).then(console.log)
+// client.query({ query: GET_MY_PROJECTS }).then(console.log)
 
 const ApolloWrappedApp = () => {
   return (

@@ -51,7 +51,7 @@ function App() {
         <Link to="/">Project List</Link>
       </nav>
       <Router>
-        <ProjectList addTime={addTime} addNewProject={addNewProject} projects={projects} path="/" />
+        {/* <ProjectList addTime={addTime} addNewProject={addNewProject} projects={projects} path="/" /> */}
         <MainPage addTime={addTime} addNewProject={addNewProject} projects={projects} path="/" />
         <ProjectPage addTime={addTime} projects={projects} path="project/:projectName" />
         <PopularRepositories path="repositories"/>

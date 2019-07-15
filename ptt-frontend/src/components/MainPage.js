@@ -6,43 +6,38 @@ import Project from './Project';
 import { ProjectListContainer } from './styled-components';
 import ProjectForm from './ProjectForm';
 
-
 const GET_MY_PROJECTS = gql`
-  {
-    getProjects {
-      projectName
+{
+  getProjects {
+    projectName
+    description
+    time {
       description
+      duration
     }
   }
+}
 `;
 
+function ProjectList({projects}){
+  
+  const projectList = projects.map(project => {
+      return <Project
+      key={project.projectName}
+      time={project.time}
+      name={project.projectName}
+      description={project.description}
+    />
+  })
+
+  return <div> {projectList} </div>
+}
+
 export default function MainPage(props) {
+
   return (
     <Query query={GET_MY_PROJECTS}>
       {({ loading, error, data }) => {
-
-       const  { projects } = data;
-       console.log({ projects });
-
-       let projectList = [];
-
-        if (projects){
-
-        projectList = projects.map(project => {
-          return (
-            <div key={project.projectName}>
-              <Link to={'project/' + project.projectName.toLowerCase()}>Open Project</Link>
-              <Project
-                addTime={props.addTime}
-                key={project.projectName}
-                time={project.time}
-                name={project.projectName}
-                description={project.description}
-              />
-            </div>
-          );
-        });
-        }
 
         if (loading) return 'Loading...';
         if (error) return `Error! ${error.message}`;
@@ -50,7 +45,7 @@ export default function MainPage(props) {
         return (
           <ProjectListContainer>
             <ProjectForm addNewProject={props.addNewProject} />
-            {projectList}
+            <ProjectList projects={data.getProjects}/>
           </ProjectListContainer>
         );
       }}
