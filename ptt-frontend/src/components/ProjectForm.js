@@ -9,7 +9,7 @@ const FieldRow = styled.div`
 
 export default function ProjectForm(props) {
   const required = value => (value ? undefined : 'Required');
-  const createProject = project => props.addNewProject({...project,time:[]});
+  const createProject = project => props.addNewProject({ ...project, time: [] });
   const focusOnError = createDecorator();
 
   return (

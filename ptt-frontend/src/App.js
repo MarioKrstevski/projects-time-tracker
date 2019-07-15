@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 
-import PopularRepositories from './components/PopularRepositories';
-import  MainPage  from './components/MainPage';
-import  ProjectPage  from './components/ProjectPage';
+import MainPage from './components/MainPage';
+import ProjectPage from './components/ProjectPage';
 
-import ProjectList from './components/ProjectList';
 import { Link, Router } from '@reach/router';
 
 function App() {
@@ -41,20 +39,19 @@ function App() {
     setProjects(updatedProjects);
   };
 
-  
-  // change in the apollo client
-  console.log('test change')
-  // under the `nav`
+  function NotFound() {
+    return <div>Oops we don't have this page</div>;
+  }
+
   return (
     <div>
       <nav>
         <Link to="/">Project List</Link>
       </nav>
       <Router>
-        {/* <ProjectList addTime={addTime} addNewProject={addNewProject} projects={projects} path="/" /> */}
-        <MainPage addTime={addTime} addNewProject={addNewProject} projects={projects} path="/" />
-        <ProjectPage addTime={addTime} projects={projects} path="project/:projectName" />
-        <PopularRepositories path="repositories"/>
+        <MainPage path="/" />
+        <ProjectPage path="project/:projectName" />
+        <NotFound default />
       </Router>
     </div>
   );

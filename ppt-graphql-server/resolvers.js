@@ -1,7 +1,7 @@
 
 const projects = [
   {
-    projectName: "Google Change",
+    projectName: "Google",
     description: "a search engine",
     time: [
       { description: "Implemented Search Bar", duration: 2000 },

@@ -3,64 +3,52 @@ import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 
 const GET_PROJECT_DETAILS = gql`
-  {
-    getProject(pN: $projectName) {
+  query GET_PROJECT_DETAILS($projectName: String!) {
+    getProject(projectName: $projectName) {
       projectName
       description
+      time {
+        duration
+        description
+      }
     }
   }
 `;
 
+function TimeEntry({ description, duration }) {
+  return (
+    <div>
+      <p>{description}</p>
+      <p>{duration}</p>
+      <button> Remove </button>
+    </div>
+  );
+}
 export default function ProjectPage(props) {
   const textInputValue = useRef(null);
 
-  const projectName = capitalizeFirstLetter(props.projectName);
-
-  const addTimeToProject = () => {
-    textInputValue.current.focus();
-    if (textInputValue.current.value !== '') {
-      props.addTime(projectName, {
-        dateRegistered: new Date(),
-        duration: parseInt(textInputValue.current.value),
-      });
-      textInputValue.current.value = '';
-    }
-  };
-
-  function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  }
-
-  const theProject = props.projects.find(proj => {
-    return projectName === proj.projectName;
-  });
-
-  const timeEntriesList = theProject.time.map((timeEntry, index) => {
-    let { dateRegistered, duration } = timeEntry;
-
-    return <div key={index} children={` Date: ${dateRegistered}, Time: ${duration} `} />;
-  });
-
-
   return (
-    <Query query={GET_PROJECT_DETAILS} variables={{ projectName: props.projectName}}>
+    <Query query={GET_PROJECT_DETAILS} variables={{ projectName: window.location.href.split('/').pop() }}>
       {({ loading, error, data }) => {
-
-        console.log({detailsData:data})
-        console.log({projectName:props.projectName})
         if (loading) return 'Loading...';
         if (error) return `Error! ${error.message}`;
 
+        const { projectName: name, description, time } = data.getProject;
+        const timeEntriesList = time.map(timeEntry => {
+          return (
+            <TimeEntry key={timeEntry.description} description={timeEntry.description} duration={timeEntry.duration} />
+          );
+        });
         return (
           <div>
-            <h1>{theProject.name}</h1>
-            <p>{theProject.description}</p>
-            <p> Total Hours: {theProject.time.reduce((acc, current) => acc + current.duration, 0) / 3600}</p>
+            <h1>{name}</h1>
+            <p>{description}</p>
+            <p> Total Hours: {time.reduce((acc, current) => acc + current.duration, 0) / 3600}</p>
             {timeEntriesList}
 
             <div>
               <input type="number" ref={textInputValue} />
-              <button onClick={addTimeToProject}>Add time</button>
+              <button>Add time</button>
             </div>
           </div>
         );
