@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 
 function TimeEntryForm({ name, refetch }) {
   const ADD_TIME = gql`
-    mutation addTime($projectName: String!, $description: String!, $duration: Number!) {
+    mutation addTime($projectName: String!, $description: String!, $duration: Int!) {
       addTime(projectName: $projectName, description: $description, duration: $duration) {
         description
         duration
@@ -30,13 +30,14 @@ function TimeEntryForm({ name, refetch }) {
                   variables: {
                     projectName: name,
                     duration: textInputDuration.current.value,
+                    duration2:parseInt(textInputDuration.current.value),
                     description: textInputDescription.current.value,
                   },
                 });
                 addTime({
                   variables: {
                     projectName: name,
-                    duration: textInputDuration.current.value,
+                    duration: parseInt(textInputDuration.current.value),
                     description: textInputDescription.current.value,
                   },
                 })
