@@ -156,6 +156,36 @@ export default {
         console.log("Update project: error = ", error);
       }
     },
+    deleteTime: async (parent, {projectName, description}) => {
+      try {
+        console.log('Time deleted try block')
+        return {
+          description: "Default - Time Successfully Deleted",
+          duration: 1337
+        };
+      } catch (e) {
+        console.log(e);
+        return  {
+          description: "Default - Time FAILED to be deleted",
+          duration: 0
+        };
+      }
+    },
+    addTime: async (parent, {projectName, description, duration}) => {
+      try {
+        console.log('Time added try block')
+        return {
+          description: "Default - Time Successfully Added",
+          duration: 3333
+        };
+      } catch (e) {
+        console.log('Error', e);
+        return  {
+          description: "Default - Time FAILED to be added",
+          duration: 5
+        };
+      }
+    },
     setRedis: async (parent, { key, value }) => {
       try {
         await client.set(key, value);

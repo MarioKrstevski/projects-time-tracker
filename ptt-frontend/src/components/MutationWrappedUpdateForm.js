@@ -5,8 +5,7 @@ import { Mutation } from 'react-apollo';
 import ProjectForm from './ProjectForm'
 
 export default function MutationWrappedUpdateForm({refetch, selectedProject}) {
-    const UPDATE_PROJECT = gql
-    `
+    const UPDATE_PROJECT = gql`
       mutation updateProject($projectName: String!, $description: String!) {
         updateProject(projectName: $projectName, description: $description) {
           description

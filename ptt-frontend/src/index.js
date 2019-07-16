@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-import { ApolloClient } from 'apollo-boost';
+import { ApolloClient, ApolloLink  } from 'apollo-boost';
+import { onError } from 'apollo-link-error'
 import { createHttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloProvider } from 'react-apollo';
@@ -24,6 +25,9 @@ const authLink = setContext((_, { headers }) => {
     }
   }
 })
+const errorLink = onError(({ graphQLErrors }) => {
+  if (graphQLErrors) graphQLErrors.map(({ message }) => console.log(message))
+})
 
 const httpLink = createHttpLink({ uri: 'http://localhost:4000/graphql' });
 // const httpLink = createHttpLink({ uri: 'https://api.github.com/graphql' })
@@ -31,8 +35,9 @@ const httpLink = createHttpLink({ uri: 'http://localhost:4000/graphql' });
 
 const client = new ApolloClient({
   // uri: URL,
-  link: httpLink,
+  link: ApolloLink.from([errorLink, httpLink]),
   cache: new InMemoryCache(),
+  onError: (e) => { console.log(e) }
 });
 
 const GET_MY_PROJECTS = gql`
