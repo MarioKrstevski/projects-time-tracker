@@ -242,15 +242,13 @@ export const Button = styled.div`
   background-color: ${props => {
     if (props.danger) {
       return '#76ae9f';
-    }
-
-    if (props.action) {
+    }else if (props.change) {
+      return '#9ec6bb';
+    } else {
       return '#92bfb2';
     }
 
-    if (props.change) {
-      return '#9ec6bb';
-    }
+   
   }};
   outline: none;
 
@@ -258,15 +256,12 @@ export const Button = styled.div`
       background-color:  ${props => {
     if (props.danger) {
       return '#ec5151';
-    }
-
-    if (props.action) {
+    } else if (props.change) {
+      return '#79f08d';
+    } else {
       return '#ecde51';
     }
 
-    if (props.change) {
-      return '#79f08d';
-    }
   }};
   }
 `;

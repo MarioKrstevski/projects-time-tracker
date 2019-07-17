@@ -24,7 +24,7 @@ function Project({ name, description, time, deleteProject, refetch, modalInterac
   const handleDeleteProject = () => {
     deleteProject({ variables: { projectName: name } })
       .then(({ data }) => {
-        console.log(' I am data from delting project', data);
+        // console.log(' I am data from delting project', data);
         refetch();
       })
       .catch(err => {
@@ -44,11 +44,11 @@ function Project({ name, description, time, deleteProject, refetch, modalInterac
       <TotalTime> Total Hours: <span>{time && time.reduce((acc, current) => acc + current.duration, 0) / 3600} </span></TotalTime>
 
       <ButtonsContainer>
+          <Button>
         <Link to={'project/' + name.toLowerCase()}>
-          <Button action>
             Open
-          </Button>
         </Link>
+          </Button>
 
         <Button danger onClick={handleDeleteProject}>
           Delete

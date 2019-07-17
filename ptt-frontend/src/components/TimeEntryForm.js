@@ -28,7 +28,6 @@ function TimeEntryForm({ name, refetch }) {
       </div>
       <Mutation mutation={ADD_TIME}>
         {(addTime, { data }) => {
-          {/* console.log('This is data from AddTime mutation: ', data); */}
           return (
             <div className="addTimeButton">
               <button

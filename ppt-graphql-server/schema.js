@@ -13,8 +13,7 @@ export default gql`
     duration: Int
   }
 
-  # The "Query" type is the root of all GraphQL queries.
-  # (A "Mutation" type will be covered later on.)
+ 
   type Query {
     getProjects: [Project]
     getProject(projectName: String!): Project
