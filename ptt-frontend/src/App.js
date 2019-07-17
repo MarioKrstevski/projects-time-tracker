@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import ProjectList from './components/ProjectList';
-import ProjectDetails from './components/ProjectDetails';
+
+import MainPage from './components/MainPage';
+import ProjectPage from './components/ProjectPage';
+
 import { Link, Router } from '@reach/router';
 
 function App() {
@@ -37,15 +39,19 @@ function App() {
     setProjects(updatedProjects);
   };
 
-  // under the `nav`
+  function NotFound() {
+    return <div>Oops we don't have this page</div>;
+  }
+
   return (
     <div>
       <nav>
         <Link to="/">Project List</Link>
       </nav>
       <Router>
-        <ProjectList addTime={addTime} addNewProject={addNewProject} projects={projects} path="/" />
-        <ProjectDetails addTime={addTime} projects={projects} path="project/:projectName" />
+        <MainPage path="/" />
+        <ProjectPage path="project/:projectName" />
+        <NotFound default />
       </Router>
     </div>
   );
