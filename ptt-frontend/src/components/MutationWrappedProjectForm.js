@@ -5,8 +5,7 @@ import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 
 export default function MutationWrappedProjectForm({refetch}) {
-    const ADD_PROJECT = gql
-    `
+    const ADD_PROJECT = gql`
       mutation addProject($projectName: String!, $description: String!) {
         addProject(projectName: $projectName, description: $description) {
           description
