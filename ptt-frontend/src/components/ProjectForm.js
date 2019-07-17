@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import { Form, Field, FormSpy } from 'react-final-form';
 import createDecorator from 'final-form-focus';
 
-const FieldRow = styled.div`
-  background-color: ${props => (props.active ? 'lightcyan' : 'white')};
-`;
+import  {ProjectFormContainer, FieldRow, FieldContainer} from './styled-components';
 
-export default function ProjectForm(props) {
+
+
+export default function LinkProjectForm(props) {
   const required = value => (value ? undefined : 'Required');
 
   const handleSubmit = (project, e, f, d) => {
@@ -29,6 +29,7 @@ export default function ProjectForm(props) {
   const focusOnError = createDecorator();
 
   return (
+        <ProjectFormContainer>
     <Form
       onSubmit={handleSubmit}
       decorators={[focusOnError]}
@@ -38,13 +39,13 @@ export default function ProjectForm(props) {
       }}
     >
       {({ handleSubmit, values, submitting }) => (
-        <form
+        <form 
           onSubmit={e => {
             e.preventDefault();
             handleSubmit();
           }}
         >
-          <div>
+          <FieldContainer>
             <Field
               name="projectName"
               placeholder="Project"
@@ -60,20 +61,23 @@ export default function ProjectForm(props) {
                 const { value, ...inputProps } = input;
                 const projectName = 'projectName' + props.version;
                 return (
-                  <FieldRow active={meta.active}>
-                    <label htmlFor={projectName}>Project</label>
+                  <FieldRow active={meta.active} error={meta.error} touched={meta.touched}>
                     {props.selectedProject ? (
-                      <input {...inputProps} name={projectName} type="text" defaultValue={props.selectedProject.projectName} />
+                      <input
+                        {...inputProps}
+                        name={projectName}
+                        type="text"
+                        defaultValue={props.selectedProject.projectName}
+                      />
                     ) : (
                       <input {...input} name={projectName} type="text" placeholder={placeholder} />
                     )}
-                    {meta.error && meta.touched && <span>{meta.error}</span>}
                   </FieldRow>
                 );
               }}
             </Field>
-          </div>
-          <div>
+          </FieldContainer>
+          <FieldContainer>
             <Field
               name="description"
               placeholder="Description"
@@ -89,19 +93,22 @@ export default function ProjectForm(props) {
                 const { value, ...inputProps } = input;
                 const description = 'description' + props.version;
                 return (
-                  <FieldRow active={meta.active}>
-                    <label htmlFor={description}>Description</label>
+                  <FieldRow active={meta.active} error={meta.error} touched={meta.touched}>
                     {props.selectedProject ? (
-                      <input {...inputProps} name={description} type="text" defaultValue={props.selectedProject.description} />
+                      <input
+                        {...inputProps}
+                        name={description}
+                        type="text"
+                        defaultValue={props.selectedProject.description}
+                      />
                     ) : (
                       <input {...input} name={description} type="text" placeholder={placeholder} />
                     )}
-                    {meta.error && meta.touched && <span>{meta.error}</span>}
                   </FieldRow>
                 );
               }}
             </Field>
-          </div>
+          </FieldContainer>
 
           <button type="submit" disabled={submitting}>
             Create/Update
@@ -116,5 +123,6 @@ export default function ProjectForm(props) {
         </form>
       )}
     </Form>
+        </ProjectFormContainer>
   );
 }

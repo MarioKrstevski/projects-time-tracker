@@ -1,10 +1,8 @@
 import styled from 'styled-components';
 
 export const ProjectListContainer = styled.div`
-  width: 80vw;
+  width: 100%;
   min-width: 300px;
-  margin: 0 auto;
-  border: 1px solid black;
 `;
 
 export const ProjectPageContainer = styled.div`
@@ -141,5 +139,67 @@ export const TimeEntryFormContainer = styled.div`
     }
   }
 `;
-export const Name2 = styled.div``;
-export const Name3 = styled.div``;
+
+// Here start the css for MainPage
+
+export const ProjectFormContainer = styled.div`
+  /* height:200px; */
+  display:grid;
+  justify-items: end;
+  background-color: #307f69;
+  height: 75px;
+
+  & button{
+    align-self: center;
+    margin-right:20px;
+    height:35px;
+    padding: 0 20px;
+    border-radius:5px;
+    border:none;
+    outline: none;
+    background-color: #82f6a1;
+
+  }
+  & button:hover{
+    background-color: #A6f9C4;
+
+  }
+`;
+
+export const FieldContainer = styled.div`
+  /* float: right; */
+  margin-right:8px;
+  line-height:75px;
+  display: inline-block;
+  height: 99%;
+  min-width: 250px;
+  width: fit-content;
+`;
+
+export const FieldRow = styled.div`
+
+  input {
+    background-color: white;   
+    min-width:240px;
+    height:40px;
+    border-radius: 8px;
+    border:none;
+    outline:none;
+    font-size:18px;
+    font-weight:400;
+    color:black;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    padding-left: 30px;
+  }
+  input::placeholder{
+    font-weight:400;
+color: ${props => (props.error && props.touched ? 'red' : 'black')};
+
+  }
+`;
+export const Name4 = styled.div``;
+export const Name5 = styled.div``;
+export const Name6 = styled.div``;
+export const Name7 = styled.div``;
+export const Name8 = styled.div``;
+export const Name9 = styled.div``;

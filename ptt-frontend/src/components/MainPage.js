@@ -62,7 +62,6 @@ export default function MainPage(props) {
               projects={data.getProjects}
             />
             <Modal refetch={refetch} selectedProject={selectedProject} isOpen={modalIsOpen} modalInteraction={modalInteraction}>
-              {() => {}}
             </Modal>
           </ProjectListContainer>
         );
