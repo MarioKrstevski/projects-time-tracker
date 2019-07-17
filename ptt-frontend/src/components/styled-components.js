@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const ProjectListContainer = styled.div`
+export const MainPageContainer = styled.div`
   width: 100%;
   min-width: 300px;
 `;
@@ -144,32 +144,30 @@ export const TimeEntryFormContainer = styled.div`
 
 export const ProjectFormContainer = styled.div`
   /* height:200px; */
-  display:grid;
+  display: grid;
   justify-items: end;
   background-color: #307f69;
   height: 75px;
 
-  & button{
+  & button {
     align-self: center;
-    margin-right:20px;
-    height:35px;
+    margin-right: 20px;
+    height: 35px;
     padding: 0 20px;
-    border-radius:5px;
-    border:none;
+    border-radius: 5px;
+    border: none;
     outline: none;
     background-color: #82f6a1;
-
   }
-  & button:hover{
-    background-color: #A6f9C4;
-
+  & button:hover {
+    background-color: #a6f9c4;
   }
 `;
 
 export const FieldContainer = styled.div`
   /* float: right; */
-  margin-right:8px;
-  line-height:75px;
+  margin-right: 8px;
+  line-height: 75px;
   display: inline-block;
   height: 99%;
   min-width: 250px;
@@ -177,29 +175,124 @@ export const FieldContainer = styled.div`
 `;
 
 export const FieldRow = styled.div`
-
   input {
-    background-color: white;   
-    min-width:240px;
-    height:40px;
+    background-color: white;
+    min-width: 240px;
+    height: 40px;
     border-radius: 8px;
-    border:none;
-    outline:none;
-    font-size:18px;
-    font-weight:400;
-    color:black;
-    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    border: none;
+    outline: none;
+    font-size: 18px;
+    font-weight: 400;
+    color: black;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     padding-left: 30px;
   }
-  input::placeholder{
-    font-weight:400;
-color: ${props => (props.error && props.touched ? 'red' : 'black')};
-
+  input::placeholder {
+    font-weight: 400;
+    color: ${props => (props.error && props.touched ? 'red' : 'black')};
   }
 `;
-export const Name4 = styled.div``;
-export const Name5 = styled.div``;
-export const Name6 = styled.div``;
-export const Name7 = styled.div``;
-export const Name8 = styled.div``;
-export const Name9 = styled.div``;
+export const ProjectListContainer = styled.div`
+  background-color: #599887;
+  padding: 10px 70px;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-column-gap: 15px;
+  grid-row-gap: 15px;
+  grid-template-rows: auto;
+`;
+export const ProjectContainer = styled.div`
+  background-color: #eef4f3;
+  border-radius: 9px;
+  box-sizing: border-box;
+  padding: 10px;
+  h2 {
+    margin: 0;
+    padding: 0;
+    font-size: 24px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  }
+  p {
+    color: #424242;
+    margin: 0;
+    padding: 0;
+    padding-left:15px;
+  }
+
+`;
+export const ButtonsContainer = styled.div`
+  margin-top: 20px;
+  text-align:center;
+`;
+
+export const Button = styled.div`
+  margin: 0 2px;
+  min-width: 70px;
+  max-width: 31%;
+  display: inline-block;
+  padding: 5px 8px;
+  text-overflow: clip;
+  text-decoration: none;
+  color: black;
+  border: none;
+  border-radius: 3px;
+  cursor:pointer;
+  background-color: ${props => {
+    if (props.danger) {
+      return '#76ae9f';
+    }
+
+    if (props.action) {
+      return '#92bfb2';
+    }
+
+    if (props.change) {
+      return '#9ec6bb';
+    }
+  }};
+  outline: none;
+
+  :hover{
+      background-color:  ${props => {
+    if (props.danger) {
+      return '#ec5151';
+    }
+
+    if (props.action) {
+      return '#ecde51';
+    }
+
+    if (props.change) {
+      return '#79f08d';
+    }
+  }};
+  }
+`;
+export const TotalTime = styled.div`
+margin: 4px;
+margin-top: 10px;
+text-align: center;
+  span {
+      font-size: 18px;
+  }
+`;
+export const ModalContaienr = styled.div`
+    background-color: #307f69;
+    padding: 10px;
+    position: fixed;
+    width: 70vw;
+    display:grid;
+    justify-items:center;
+
+    button:last-child{
+        outline:none;
+        border:none;
+        width: fit-content;
+        background-color: #000;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius:4px;
+    }
+`;

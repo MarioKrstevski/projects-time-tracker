@@ -4,6 +4,8 @@ import { Link } from '@reach/router';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 
+import { ProjectContainer, Button, ButtonsContainer, TotalTime} from './styled-components';
+
 export default function MutationWrappedProject(props) {
   const DELETE_PROJECT = gql`
     mutation addProject($projectName: String!) {
@@ -31,23 +33,30 @@ function Project({ name, description, time, deleteProject, refetch, modalInterac
   };
 
   const handleUpdateProject = () => {
-    setSelectedProject({projectName: name,description})
+    setSelectedProject({ projectName: name, description });
     modalInteraction.openModal();
   };
 
   return (
-    <div>
+    <ProjectContainer>
       <h2>{name}</h2>
       <p>{description}</p>
-      <p> Total Hours: {time && time.reduce((acc, current) => acc + current.duration, 0) / 3600}</p>
+      <TotalTime> Total Hours: <span>{time && time.reduce((acc, current) => acc + current.duration, 0) / 3600} </span></TotalTime>
 
-      <div>
+      <ButtonsContainer>
         <Link to={'project/' + name.toLowerCase()}>
-          <button onClick={handleDeleteProject}>Open Project</button>
+          <Button action onClick={handleDeleteProject}>
+            Open
+          </Button>
         </Link>
-        <button onClick={handleDeleteProject}>Delete Project</button>
-        <button onClick={handleUpdateProject}>Update Project</button>
-      </div>
-    </div>
+
+        <Button danger onClick={handleDeleteProject}>
+          Delete
+        </Button>
+        <Button change onClick={handleUpdateProject}>
+          Update
+        </Button>
+      </ButtonsContainer>
+    </ProjectContainer>
   );
 }

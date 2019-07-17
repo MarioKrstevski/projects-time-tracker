@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import Project from './Project';
 import Modal from './Modal';
-import { ProjectListContainer } from './styled-components';
+import { ProjectListContainer, MainPageContainer } from './styled-components';
 import MutationWrappedProjectForm from './MutationWrappedProjectForm';
 
 const GET_MY_PROJECTS = gql`
@@ -34,7 +34,7 @@ function ProjectList({ projects, refetch, setSelectedProject, modalInteraction }
     );
   });
 
-  return <div> {projectList} </div>;
+  return <ProjectListContainer> {projectList} </ProjectListContainer>;
 }
 
 export default function MainPage(props) {
@@ -53,7 +53,7 @@ export default function MainPage(props) {
         if (error) return `Error! ${error.message}`;
 
         return (
-          <ProjectListContainer>
+          <MainPageContainer>
             <MutationWrappedProjectForm refetch={refetch} addNewProject={props.addNewProject} />
             <ProjectList
               setSelectedProject={setSelectedProject}
@@ -63,7 +63,7 @@ export default function MainPage(props) {
             />
             <Modal refetch={refetch} selectedProject={selectedProject} isOpen={modalIsOpen} modalInteraction={modalInteraction}>
             </Modal>
-          </ProjectListContainer>
+          </MainPageContainer>
         );
       }}
     </Query>
