@@ -45,7 +45,7 @@ function Project({ name, description, time, deleteProject, refetch, modalInterac
 
       <ButtonsContainer>
         <Link to={'project/' + name.toLowerCase()}>
-          <Button action onClick={handleDeleteProject}>
+          <Button action>
             Open
           </Button>
         </Link>

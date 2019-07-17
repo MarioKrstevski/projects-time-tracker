@@ -36,163 +36,198 @@ client.on("error", err => {
   console.log("Error " + err);
 });
 
-// client.set("string key", "string val", redis.print);
-// client.hset("hash key", "hashtest 1", "some value", redis.print);
-// client.hset(["hash key", "hashtest 2", "some other value"], redis.print);
-// client.hkeys("hash key", function (err, replies) {
-//   console.log(replies.length + " replies:");
-//   replies.forEach(function (reply, i) {
-//       console.log("    " + i + ": " + reply);
-//   });
-//   // client.quit();
-// });
+client.set("projects", JSON.stringify(projects));
 
 export default {
   Query: {
-    getProjects: () => projects,
-    getProject: (parent, args, context, info) => {
-      let found = projects.find(project => {
-        return project.projectName.toLowerCase() === args.projectName;
-      });
-
-      if (found != undefined && found != null) {
-        return found;
-      } else {
+    getProjects: async () => {
+      try {
+        const projectsString = await getAsync("projects");
+        const projects = JSON.parse(projectsString);
+        return projects;
+      } catch (err) {
+        console.log("Error while getProjects query", err);
         return {
-          projectName: "Default - Search not found",
-          description: "Default Default - Search not found",
-          time: [
-            {
-              description: "Default - Search not found implemented",
-              duration: 3300
-            },
-            { description: "Default - Can't find Project", duration: 4000 }
-          ]
+          error: "Failed to get projects"
         };
       }
     },
-    getRedis: (parent, { key }) => {
+    getProject: async (parent, { projectName }, context, info) => {
       try {
-        return client.get(key);
-      } catch (e) {
-        return null;
+        const projectsString = await getAsync("projects");
+        const projects = JSON.parse(projectsString);
+        const project = projects.find(project => {
+          return project.projectName.toLowerCase() === projectName;
+        });
+        return project;
+      } catch (err) {
+        console.log("Error while getProject query", err);
+        return {
+          error: "Failed to get project"
+        };
       }
     }
-    // getProject: (parent, args, context, info) => {
-
-    // return  {
-    //   projectName: args.projectName,
-    //   description: "Better Android",
-    //   time: [
-    //     { dateRegistered: new Date().toLocaleDateString(), duration: 3300 },
-    //     { dateRegistered: new Date().toLocaleDateString(), duration: 4000 }
-    //   ]
-    // }
   },
   Mutation: {
     addProject: async (parent, { projectName, description }) => {
-      console.log("We are hitting the server");
       try {
-        await client.set("Test", "Test", redis.print);
+        const projectsString = await getAsync("projects");
+        let projects = JSON.parse(projectsString);
+
+        projects = [
+          ...projects,
+          {
+            projectName: `${projectName}`,
+            description: `${description}`,
+            time: []
+          }
+        ];
+
+        client.set("projects", JSON.stringify(projects));
+
         return {
-          projectName: `${projectName} Success`,
+          projectName: `${projectName}`,
           description: `${description}`,
-          time: [
-            {
-              description: "Default - Search not found implemented",
-              duration: 3300
-            },
-            { description: "Default - Can't find Project", duration: 4000 }
-          ]
+          time: []
         };
-      } catch (e) {
-        console.log(e);
+      } catch (err) {
+        console.log("Error from addProject mutation,", err);
         return {
-          projectName: `${projectName} Failure`,
-          description: `${description}`,
-          time: [
-            {
-              description: "Default - Search not found implemented",
-              duration: 3300
-            },
-            { description: "Default - Can't find Project", duration: 4000 }
-          ]
+          error: "Failed to add project"
         };
       }
-      // console.log(projectName,description)
-      // return {
-      //   projectName: `${projectName} Test`,
-      //   description: `${description}`,
-      //   time: [
-      //     {
-      //       description: "Default - Search not found implemented",
-      //       duration: 3300
-      //     },
-      //     { description: "Default - Can't find Project", duration: 4000 }
-      //   ]
     },
-
     deleteProject: async (parent, { projectName }) => {
       try {
-        return "Project has been deleted successfully";
+        const projectsString = await getAsync("projects");
+        let projects = JSON.parse(projectsString);
+
+        projects = projects.filter(project => {
+          return project.projectName !== projectName;
+        });
+
+        client.set("projects", JSON.stringify(projects));
+        return "Successfuly deleted project";
       } catch (err) {
-        console.log("Delete project: erorr = ", error);
+        console.log("Error from addProject mutation,", err);
+
+        return "Failed to delete project";
       }
     },
-    updateProject: async (parent, { projectName, description }) => {
+    updateProject: async (
+      parent,
+      { projectName, description, oldProjectName }
+    ) => {
       try {
+        const projectsString = await getAsync("projects");
+        let projects = JSON.parse(projectsString);
+        let projectTime = [];
+        projects = projects.filter(project => {
+          if (project.projectName === oldProjectName) {
+            projectTime = project.time;
+          }
+          return project.projectName !== oldProjectName;
+        });
+
+        projects = [
+          ...projects,
+          {
+            projectName: `${projectName}`,
+            description: `${description}`,
+            time: projectTime
+          }
+        ];
+
+        client.set("projects", JSON.stringify(projects));
+
         return {
-          projectName: `${projectName} Update`,
+          projectName: `${projectName}`,
           description: `${description}`,
-          time: [
-            {
-              description: "Default - Search not found implemented",
-              duration: 3300
-            },
-            { description: "Default - Can't find Project", duration: 4000 }
-          ]
+          time: projectTime
         };
       } catch (err) {
-        console.log("Update project: error = ", error);
-      }
-    },
-    deleteTime: async (parent, {projectName, description}) => {
-      try {
-        console.log('Time deleted try block')
+        console.log("Error from updateProject mutation,", err);
         return {
-          description: "Default - Time Successfully Deleted",
-          duration: 1337
-        };
-      } catch (e) {
-        console.log(e);
-        return  {
-          description: "Default - Time FAILED to be deleted",
-          duration: 0
+          error: "Failed to update project"
         };
       }
     },
-    addTime: async (parent, {projectName, description, duration}) => {
+    deleteTime: async (parent, { projectName, description }) => {
       try {
-        console.log('Time added try block')
+        const projectsString = await getAsync("projects");
+        let projects = JSON.parse(projectsString);
+
+        const project = projects.find(project => {
+          return project.projectName === projectName;
+        });
+
+        let time = project.time;
+        let deletedTime = time.find(
+          timeEntry => timeEntry.description === description
+        );
+        time = time.filter(timeEntry => {
+          return timeEntry.description !== description;
+        });
+
+        projects = projects.map(project => {
+          if (project.projectName === projectName) {
+            let returnProject = project;
+            returnProject.time = time;
+            return returnProject;
+          } else {
+            return project;
+          }
+        });
+
+        client.set("projects", JSON.stringify(projects));
+
+        return deletedTime;
+      } catch (err) {
+        console.log("Error from deleteTime mutation,", err);
         return {
-          description: "Default - Time Successfully Added",
-          duration: 3333
-        };
-      } catch (e) {
-        console.log('Error', e);
-        return  {
-          description: "Default - Time FAILED to be added",
-          duration: 5
+          error: "Failed to delete time on project"
         };
       }
     },
-    setRedis: async (parent, { key, value }) => {
+    addTime: async (parent, { projectName, description, duration }) => {
       try {
-        await client.set(key, value);
-        return true;
-      } catch (e) {
-        console.log(e);
-        return false;
+        const projectsString = await getAsync("projects");
+        let projects = JSON.parse(projectsString);
+
+        const project = projects.find(project => {
+          return project.projectName === projectName;
+        });
+
+        let time = project.time;
+        time = [
+          ...time,
+          {
+            description,
+            duration
+          }
+        ];
+
+        projects = projects.map(project => {
+          if (project.projectName === projectName) {
+            let returnProject = project;
+            returnProject.time = time;
+            return returnProject;
+          } else {
+            return project;
+          }
+        });
+
+        client.set("projects", JSON.stringify(projects));
+
+        return {
+          description,
+          duration
+        };
+      } catch (err) {
+        console.log("Error from addTime mutation,", err);
+        return {
+          error: "Failed to add time on project"
+        };
       }
     }
   }

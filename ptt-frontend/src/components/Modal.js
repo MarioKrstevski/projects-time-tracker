@@ -5,7 +5,7 @@ import { ModalContaienr} from './styled-components';
 
 export default function Modal({ refetch, selectedProject, isOpen, modalInteraction}) {
 
-    console.log('Selected: ', selectedProject )
+    // console.log('Selected: ', selectedProject )
   if (isOpen) {
     return (
       <ModalContaienr>
