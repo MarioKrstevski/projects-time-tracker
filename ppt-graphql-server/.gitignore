@@ -2,7 +2,9 @@
 
 # dependencies
 /node_modules
+
 /../ppt-graphql-server/node_modules
+
 /.pnp
 .pnp.js
 
