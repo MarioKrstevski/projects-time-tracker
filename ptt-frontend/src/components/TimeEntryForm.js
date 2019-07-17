@@ -28,21 +28,21 @@ function TimeEntryForm({ name, refetch }) {
       </div>
       <Mutation mutation={ADD_TIME}>
         {(addTime, { data }) => {
-          console.log('This is data from AddTime mutation: ', data);
+          {/* console.log('This is data from AddTime mutation: ', data); */}
           return (
             <div className="addTimeButton">
               <button
                 onClick={() => {
-                  console.log('Duration:', textInputDuration.current.value);
-                  console.log('Description:', textInputDescription.current.value);
-                  console.log('Variables: ', {
-                    variables: {
-                      projectName: name,
-                      duration: textInputDuration.current.value,
-                      duration2: parseInt(textInputDuration.current.value),
-                      description: textInputDescription.current.value,
-                    },
-                  });
+                  // console.log('Duration:', textInputDuration.current.value);
+                  // console.log('Description:', textInputDescription.current.value);
+                  // console.log('Variables: ', {
+                  //   variables: {
+                  //     projectName: name,
+                  //     duration: textInputDuration.current.value,
+                  //     duration2: parseInt(textInputDuration.current.value),
+                  //     description: textInputDescription.current.value,
+                  //   },
+                  // });
                   addTime({
                     variables: {
                       projectName: name,
@@ -51,7 +51,7 @@ function TimeEntryForm({ name, refetch }) {
                     },
                   })
                     .then(({ data }) => {
-                      console.log('This data is from TimeEntry addTime mutation', data);
+                      // console.log('This data is from TimeEntry addTime mutation', data);
                       refetch();
                     })
                     .catch(err => {
