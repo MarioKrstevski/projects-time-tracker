@@ -10,14 +10,30 @@ export default function LinkProjectForm(props) {
     // console.log('Test123', props.selectedProject);
     // console.log('Projhect', { ...project, time: [] });
     // console.log('Variables', { variables: { ...project } });
-    return props
-      .callMutation({ variables: { ...project } })
-      .then(({ data }) => {
-        props.refetch();
-      })
-      .catch(err => {
-        console.log(err);
-      });
+
+    if(props.version === 2){
+      props
+        .callMutation({ variables: { ...project , oldProjectName: props.selectedProject.projectName} })
+        .then(({ data }) => {
+          props.refetch();
+        })
+        .catch(err => {
+          console.log(err);
+        });
+
+    } else {
+      
+      props
+        .callMutation({ variables: { ...project } })
+        .then(({ data }) => {
+          props.refetch();
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+
+    
   };
   const focusOnError = createDecorator();
 
